@@ -8,12 +8,12 @@ use App\Models\Todo;
 class TodoController extends Controller
 {
     public function index(){
-        $todo = Todo::all();
-        return view('todoview.index', ['todo'=>$todo]);
+        $todos = Todo::all();
+        return view('todo.index', ['todos'=>$todos]);
     }
 
     public function create(){
-        return view('todoview.create');
+        return view('todo.index');
     }
     
     public function store(Request $request){
@@ -22,6 +22,11 @@ class TodoController extends Controller
             'task' => 'required',
         ]);
         $newTodo = Todo::create($data);
-        return redirect(route('todoview.index'));
+        return redirect(route('todo.index'));
+    }
+
+    public function destroy(Todo $todo){
+        $todo->delete();
+        return redirect(route('todo.index'))->with('success', 'Product Deleted Successfully!');
     }
 }
